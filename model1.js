@@ -15,7 +15,7 @@ function runSimulation({
 		*   some time to react).
 		*/
 	var sim = new Sim();
-	var random = new Random(seed);
+	var random = new Random();
 
 	var trafficLight = new Sim.Event("Traffic Light");
 	var cars = Array(numCars).fill().map((_, i) => new Sim.Event(`Car #${i}`));
@@ -26,6 +26,8 @@ function runSimulation({
 			sim.log("Traffic light is green");
 		}
 	}
+
+	let numCarCrossed = 0;
 
 	var carsStats = new Sim.Population("Cars that are waiting to pass the intersection");
 	const timeNeededToReachMaxVelocity = maxVelocityMPS / accelerationMPS2;
@@ -42,7 +44,7 @@ function runSimulation({
 			this.waitEvent(waitForEvent).done(function () {
 				const { currentCar, carIdx, distanceToTrafficLight, arrivedAt } = this.callbackData;
 
-				const delay = random.uniform(1, 3);
+				const delay = random.uniform(0, 3);
 				this.setTimer(delay).done(function() {
 					currentCar.fire(true);
 					sim.log(`Car #${carIdx} started moving`)
@@ -60,6 +62,7 @@ function runSimulation({
 					this.setTimer(timeNeededToCrossIntersection).done(function() {
 						carsStats.leave(arrivedAt, this.time());
 						sim.log(`Car #${carIdx} crossed the intersection`);
+						numCarCrossed += 1;
 					})
 				});
 			}).setData({
@@ -76,8 +79,9 @@ function runSimulation({
 		}
 	}
 
-	sim.setLogger(function (str) { console.log(str); });
+	// sim.setLogger(function (str) { console.log(str); });
 	sim.addEntity(LightController);
 	sim.addEntity(Traffic)
 	sim.simulate(trafficLightGreenDurationSeconds)
+	return numCarCrossed;
 }

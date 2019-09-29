@@ -5,15 +5,50 @@
 		<title>Traffic Light Simulation</title>
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	  <script src="sim-0.26.js"></script>
 	  <script src="utils.js"></script>
 	  <script src="model1.js"></script>
 	</head>
 
 	<body>
-
+		<table class="table">
+		  <thead>
+		    <tr>
+		      <th scope="col">Model</th>
+		      <th scope="col"># simulations ran</th>
+		      <th scope="col"># avg. cars crossed</th>
+		      <th scope="col"># min. cars crossed</th>
+		      <th scope="col"># max. cars crossed</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		    <tr>
+		      <th scope="row">model 1</th>
+		      <td id="model1-sim">0</td>
+		      <td id="model1-avg">0</td>
+		      <td id="model1-min">0</td>
+		      <td id="model1-max">0</td>
+		    </tr>
+		  </tbody>
+		</table>
 	</body>
 	<script type="text/javascript">
-		runSimulation({});
+		const numSimulations = 2500;
+		let total = 0;
+		let min = 100000;
+		let max = 0;
+		for (let i = 0; i < numSimulations; i++) {
+			const result = runSimulation({});
+			total += result;
+			max = Math.max(max, result);
+			min = Math.min(min, result);
+
+			document.getElementById("model1-sim").innerText = i + 1;
+			document.getElementById("model1-avg").innerText = total / (i + 1);
+			document.getElementById("model1-min").innerText = min;
+			document.getElementById("model1-max").innerText = max;
+		}
 	</script>
+	<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
 </html>
