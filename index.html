@@ -68,14 +68,7 @@
             <th scope="col"># max. cars crossed</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <th scope="row"><a href="model1.js" target="_blank">Model 1</a></th>
-            <td id="model1-sim">0</td>
-            <td id="model1-avg">0</td>
-            <td id="model1-min">0</td>
-            <td id="model1-max">0</td>
-          </tr>
+        <tbody id="result">
         </tbody>
       </table>
       <h3>
@@ -112,6 +105,7 @@
 
     function runSimulation() {
       const numSimulations = getValue("general-numSimulation");
+      document.getElementById("result").innerHTML = "";
 
       const models = [{
         name: 'Model 1',
@@ -131,6 +125,8 @@
           {}
         );
         console.log({simulationArgs})
+
+        document.getElementById("result").innerHTML += `<tr><th scope="row"><a href="model1.js" target="_blank">${name}</a></th><td id="${slug}-sim">0</td><td id="${slug}-avg">0</td><td id="${slug}-min">0</td><td id="${slug}-max">0</td></tr>`;
 
         for (let i = 0; i < numSimulations; i++) {
           const result = simulateModel1(simulationArgs);
