@@ -1,4 +1,12 @@
-function runSimulation({
+/** Model 1:
+  * - Every car starts moving in same acceleration and its velocity is capped
+  *   so they don't collide.
+  * - A car can't move if the car in front of it is not moving.
+  * - We added uniform delay to each car to start moving to give the driver
+  *   some time to react).
+  */
+
+function simulateModel1({
   trafficLightGreenDurationSeconds = 15,
   numCars = 100,
   seed = 1337,
@@ -7,13 +15,6 @@ function runSimulation({
   maxVelocityMPS = 10,
   accelerationMPS2 = 2.5,
 }) {
-  /** Model 1:
-    * - Every car starts moving in same acceleration and its velocity is capped
-    *   so they don't collide.
-    * - A car can't move if the car in front of it is not moving.
-    * - We added uniform delay to each car to start moving to give the driver
-    *   some time to react).
-    */
   var sim = new Sim();
   var random = new Random();
 

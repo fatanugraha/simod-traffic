@@ -32,7 +32,32 @@
           <li>There is a 2 m gap between each stationary car</li>
         </ul>
       </blockquote>
-      <h3>Simulation Results</h3>
+      <h3>Simulation Parameters</h3>
+
+      <form>
+        <div class="form-row">
+          <div class="col">
+            <label>Number of Simulations</label>
+            <input type="text" class="form-control" id="general-numSimulation" value="2500">
+          </div>
+        </div>
+        <hr>
+        <label for="exampleInputEmail1">Model 1 Parameters</label>
+        <div class="form-row">
+          <div class="col">
+            <label>Max Velocity (m/s)</label>
+            <input type="text" class="form-control" id="model1-maxVelocityMPS" value="10">
+          </div>
+          <div class="col">
+            <label>Acceleration (m/s<sup>2</sup>)</label>
+            <input type="text" class="form-control" id="model1-accelerationMPS2" value="2.5">
+          </div>
+        </div>
+        <hr>
+      </form>
+      <button id="rerun" class="btn btn-primary mt-3" onclick="reRunSimulation()">Re-Run Simulation</button>
+
+      <h3 class="mt-4">Simulation Results</h3>
       <table class="table table-bordered ">
         <thead class="thead-dark">
           <tr>
@@ -70,21 +95,61 @@
     </div>
   </body>
   <script type="text/javascript">
-    const numSimulations = 2500;
-    let total = 0;
-    let min = 100000;
-    let max = 0;
-    for (let i = 0; i < numSimulations; i++) {
-      const result = runSimulation({});
-      total += result;
-      max = Math.max(max, result);
-      min = Math.min(min, result);
-
-      document.getElementById("model1-sim").innerText = i + 1;
-      document.getElementById("model1-avg").innerText = total / (i + 1);
-      document.getElementById("model1-min").innerText = min;
-      document.getElementById("model1-max").innerText = max;
+    function getValue(name) {
+      return +document.getElementById(name).value;
     }
+
+    function reRunSimulation() {
+      document.getElementById("rerun").disabled = true;
+      console.log(document.getElementById("rerun").disabled);
+      document.getElementById("rerun").innerHTML = "Running Simulation ...";
+      setTimeout(() => {
+        runSimulation();
+        document.getElementById("rerun").disabled = false;
+        document.getElementById("rerun").innerHTML = "Re-Run Simulation";
+      }, 150);
+    }
+
+    function runSimulation() {
+      const numSimulations = getValue("general-numSimulation");
+
+      const models = [{
+        name: 'Model 1',
+        slug: 'model1',
+        func: simulateModel1,
+        args: ['maxVelocityMPS', 'accelerationMPS2']
+      }]
+
+      models.forEach(({ name, func, args, slug }) => {
+        console.log(`Start simulation for model ${name}`)
+        let total = 0;
+        let min = 100000;
+        let max = 0;
+
+        const simulationArgs = args.reduce(
+          (prev, cur) => ({[cur]: getValue(`${slug}-${cur}`), ...prev}),
+          {}
+        );
+        console.log({simulationArgs})
+
+        for (let i = 0; i < numSimulations; i++) {
+          const result = simulateModel1(simulationArgs);
+          total += result;
+          max = Math.max(max, result);
+          min = Math.min(min, result);
+
+          document.getElementById(`${slug}-sim`).innerText = i + 1;
+          document.getElementById(`${slug}-avg`).innerText = total / (i + 1);
+          document.getElementById(`${slug}-min`).innerText = min;
+          document.getElementById(`${slug}-max`).innerText = max;
+        }
+      });
+    }
+
+    runSimulation();
   </script>
-  <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </html>
+
