@@ -1,54 +1,83 @@
 <!doctype html>
 <html class="no-js" lang="">
-	<head>
-		<meta charset="utf-8">
-		<title>Traffic Light Simulation</title>
-		<meta name="description" content="">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	  <script src="sim-0.26.js"></script>
-	  <script src="utils.js"></script>
-	  <script src="model1.js"></script>
-	</head>
+  <head>
+    <meta charset="utf-8">
+    <title>Traffic Light Simulation</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="sim-0.26.js"></script>
+    <script src="utils.js"></script>
+    <script src="model1.js"></script>
+  </head>
 
-	<body>
-		<table class="table">
-		  <thead>
-		    <tr>
-		      <th scope="col">Model</th>
-		      <th scope="col"># simulations ran</th>
-		      <th scope="col"># avg. cars crossed</th>
-		      <th scope="col"># min. cars crossed</th>
-		      <th scope="col"># max. cars crossed</th>
-		    </tr>
-		  </thead>
-		  <tbody>
-		    <tr>
-		      <th scope="row">model 1</th>
-		      <td id="model1-sim">0</td>
-		      <td id="model1-avg">0</td>
-		      <td id="model1-min">0</td>
-		      <td id="model1-max">0</td>
-		    </tr>
-		  </tbody>
-		</table>
-	</body>
-	<script type="text/javascript">
-		const numSimulations = 2500;
-		let total = 0;
-		let min = 100000;
-		let max = 0;
-		for (let i = 0; i < numSimulations; i++) {
-			const result = runSimulation({});
-			total += result;
-			max = Math.max(max, result);
-			min = Math.min(min, result);
+  <style type="text/css">
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      margin-top: 20px;
+    }
+  </style>
+  <body>
+    <div class="container">
+      <h1>Problem B1</h1>
+      <blockquote class="blockquote">
+        <p class="mb-0">
+          How many cars can pass through a set of traffic lights when they turn green for a period of 15 second?
+        </p>
+        <ul>
+          <li>The junction is not blocked in any way.</li>
+          <li>All cars intend to pass directly across the junction.</li>
+          <li>All vehicles are cars of same size, 5 m in length, and initially at rest.</li>
+          <li>There is a 2 m gap between each stationary car</li>
+        </ul>
+      </blockquote>
+      <h3>Simulation Results</h3>
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Model</th>
+            <th scope="col"># simulations ran</th>
+            <th scope="col"># avg. cars crossed</th>
+            <th scope="col"># min. cars crossed</th>
+            <th scope="col"># max. cars crossed</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row"><a href="model1.js">Model 1</a></th>
+            <td id="model1-sim">0</td>
+            <td id="model1-avg">0</td>
+            <td id="model1-min">0</td>
+            <td id="model1-max">0</td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>
+        Authors
+      </h3>
+      <ul>
+        <li>Asel Hidayat Sjamhars</li>
+        <li>Fata Nugraha</li>
+      </ul>
+    </div>
+  </body>
+  <script type="text/javascript">
+    const numSimulations = 2500;
+    let total = 0;
+    let min = 100000;
+    let max = 0;
+    for (let i = 0; i < numSimulations; i++) {
+      const result = runSimulation({});
+      total += result;
+      max = Math.max(max, result);
+      min = Math.min(min, result);
 
-			document.getElementById("model1-sim").innerText = i + 1;
-			document.getElementById("model1-avg").innerText = total / (i + 1);
-			document.getElementById("model1-min").innerText = min;
-			document.getElementById("model1-max").innerText = max;
-		}
-	</script>
-	<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
+      document.getElementById("model1-sim").innerText = i + 1;
+      document.getElementById("model1-avg").innerText = total / (i + 1);
+      document.getElementById("model1-min").innerText = min;
+      document.getElementById("model1-max").innerText = max;
+    }
+  </script>
+  <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
 </html>
